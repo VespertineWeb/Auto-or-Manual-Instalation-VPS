@@ -24,7 +24,7 @@ cd && cd ./install && sudo ./install_instancia
 | --- | Mínimo | Recomendado |
 | --- | --- | --- |
 | Node JS 20.x |
-| Ubuntu | 20.x | 22.x |
+| Ubuntu | 20.x Auto | 22.x Manual|
 | Memória RAM | 4Gb | 8Gb |  
 
 ## 🗿 Instalação Manual -------------------------------------------------

@@ -281,7 +281,7 @@ system_node_install() {
   sleep 2
 
   sudo su - root <<EOF
-  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
   apt-get install -y nodejs
   sleep 2
   npm install -g npm@latest
@@ -379,25 +379,6 @@ system_docker_install() {
 
   apt install -y docker-ce
 EOF
-
-  sleep 2
-}
-
-#######################################
-# Ask for file location containing
-# multiple URL for streaming.
-# Globals:
-#   WHITE
-#   GRAY_LIGHT
-#   BATCH_DIR
-#   PROJECT_ROOT
-# Arguments:
-#   None
-#######################################
-system_puppeteer_dependencies() {
-  print_banner
-  printf "${WHITE} 💻 Instalando puppeteer dependencies...${GRAY_LIGHT}"
-  printf "\n\n"
 
   sleep 2
 }
@@ -553,7 +534,7 @@ EOF
 #######################################
 system_certbot_setup() {
   print_banner
-  printf "${WHITE} 💻 Configurando certbot, Já estamos perto do fim...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Configurando certbot, já estamos perto do fim...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2

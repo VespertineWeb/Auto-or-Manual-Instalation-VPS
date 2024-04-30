@@ -57,7 +57,6 @@ frontend_update() {
   sudo su - deploy <<EOF
   cd /home/deploy/${empresa_atualizar}
   pm2 stop ${empresa_atualizar}-frontend
-  git fetch
   git pull
   cd /home/deploy/${empresa_atualizar}/frontend
   npm install --legacy-peer-deps
@@ -92,12 +91,7 @@ sudo su - deploy << EOF
   cat <<[-]EOF > /home/deploy/${instancia_add}/frontend/.env
 REACT_APP_BACKEND_URL=${backend_url}
 REACT_APP_HOURS_CLOSE_TICKETS_AUTO=
-REACT_APP_LOCALE=pt-br
 REACT_APP_TIMEZONE=America/Sao_Paulo
-REACT_APP_TRIALEXPIRATION=7
-REACT_APP_FACEBOOK_APP_ID=
-REACT_APP_NUMBER_SUPPORT=
-PORT=${frontend_port}
 [-]EOF
 EOF
 
