@@ -12,7 +12,7 @@ sudo usermod -aG sudo deploy
 
 DOWNLOAD INSTALL: 💾
 ```bash
-sudo apt install -y git && git clone https://github.com/VespertineWeb/Auto-or-Manual-Instalation-VPS && sudo chmod -R 777 ./install && cd ./install && sudo ./install_primaria
+sudo apt install -y git && git clone https://github.com/VespertineWeb/Auto-or-Manual-Instalation-VPS && sudo chmod -R 777 ./Auto-or-Manual-Instalation-VPS && cd ./Auto-or-Manual-Instalation-VPS && sudo ./install_primaria
 ```
 
 NEW INSTANCE INSTALL: 🐵
