@@ -1,3 +1,33 @@
+## 🍷 Instalação Automatica
+
+```bash
+sudo apt -y update && apt -y upgrade
+```
+
+USER: 🐳💻
+```bash
+sudo adduser deploy
+sudo usermod -aG sudo deploy
+```
+
+DOWNLOAD INSTALL: 💾
+```bash
+sudo apt install -y git && git clone https://github.com/VespertineWeb/Auto-or-Manual-Instalation-VPS && sudo chmod -R 777 ./install && cd ./install && sudo ./install_primaria
+```
+
+NEW INSTANCE INSTALL: 🐵
+```bash
+cd && cd ./install && sudo ./install_instancia
+```
+## Requisitos
+
+| --- | Mínimo | Recomendado |
+| --- | --- | --- |
+| Node JS 20.x |
+| Ubuntu | 20.x | 22.x |
+| Memória RAM | 4Gb | 8Gb |  
+
+## 🗿 Instalação Manual -------------------------------------------------
 ## Realizando atualizações na vps
 
 Atulizações de pacotes e instalação de libs que serão utilizadas pela vps.
