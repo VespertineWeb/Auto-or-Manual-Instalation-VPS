@@ -44,7 +44,6 @@ system_fail2ban_conf
 system_firewall_conf
 system_pm2_install
 system_docker_install
-system_puppeteer_dependencies
 system_snapd_install
 system_nginx_install
 system_certbot_install
