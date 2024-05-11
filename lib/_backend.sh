@@ -13,12 +13,12 @@ backend_redis_create() {
 
   sleep 2
 
-  sudo su - root <<EOF
+  su - root <<EOF
   usermod -aG docker deploy
   docker run --name redis-${instancia_add} -p ${redis_port}:6379 --restart always --detach redis redis-server --requirepass ${mysql_root_password}
   
   sleep 2
-  sudo su - postgres <<EOF
+  su - postgres <<EOF
   createdb ${instancia_add};
   psql
   CREATE USER ${instancia_add} SUPERUSER INHERIT CREATEDB CREATEROLE;
@@ -53,7 +53,7 @@ backend_set_env() {
   frontend_url=${frontend_url%%/*}
   frontend_url=https://$frontend_url
 
-sudo su - deploy << EOF
+  su - deploy << EOF
   cat <<[-]EOF > /home/deploy/${instancia_add}/backend/.env
 NODE_ENV=
 BACKEND_URL=${backend_url}
@@ -73,6 +73,11 @@ JWT_REFRESH_SECRET=${jwt_refresh_secret}
 REDIS_URI=redis://:${mysql_root_password}@127.0.0.1:${redis_port}
 REDIS_OPT_LIMITER_MAX=1
 REDIS_OPT_LIMITER_DURATION=3000
+
+REDIS_AUTHSTATE_SERVER=127.0.0.1
+REDIS_AUTHSTATE_PORT=${redis_port}
+REDIS_AUTHSTATE_PWD=${mysql_root_password}
+REDIS_AUTHSTATE_DATABASE=
 
 USER_LIMIT=${max_user}
 CONNECTIONS_LIMIT=${max_whats}
@@ -101,7 +106,7 @@ backend_node_dependencies() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/backend
   npm install
 EOF
@@ -121,7 +126,7 @@ backend_node_build() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/backend
   npm run build
 EOF
@@ -141,7 +146,7 @@ backend_update() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${empresa_atualizar}
   pm2 stop ${empresa_atualizar}-backend
   git pull
@@ -172,7 +177,7 @@ backend_db_migrate() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/backend
   npx sequelize db:migrate
 EOF
@@ -192,7 +197,7 @@ backend_db_seed() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/backend
   npx sequelize db:seed:all
 EOF
@@ -213,7 +218,7 @@ backend_start_pm2() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/backend
   pm2 start dist/server.js --name ${instancia_add}-backend --max-memory-restart 512M
   pm2 save
@@ -236,7 +241,7 @@ backend_nginx_setup() {
 
   backend_hostname=$(echo "${backend_url/https:\/\/}")
 
-sudo su - root << EOF
+su - root << EOF
 cat > /etc/nginx/sites-available/${instancia_add}-backend << 'END'
 server {
   server_name $backend_hostname;

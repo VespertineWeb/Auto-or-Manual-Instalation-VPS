@@ -14,7 +14,7 @@ frontend_node_dependencies() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/frontend
   npm install --force
 EOF
@@ -34,7 +34,7 @@ frontend_node_build() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/frontend
   npm run build
 EOF
@@ -54,9 +54,10 @@ frontend_update() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${empresa_atualizar}
   pm2 stop ${empresa_atualizar}-frontend
+  git fetch
   git pull
   cd /home/deploy/${empresa_atualizar}/frontend
   npm install --force
@@ -87,17 +88,19 @@ frontend_set_env() {
   backend_url=${backend_url%%/*}
   backend_url=https://$backend_url
 
-sudo su - deploy << EOF
+  su - deploy << EOF
   cat <<[-]EOF > /home/deploy/${instancia_add}/frontend/.env
 REACT_APP_BACKEND_URL=${backend_url}
 REACT_APP_HOURS_CLOSE_TICKETS_AUTO=
+REACT_APP_LOCALE=pt-br
 REACT_APP_TIMEZONE=America/Sao_Paulo
+REACT_APP_TRIALEXPIRATION=7
 [-]EOF
 EOF
 
   sleep 2
 
-sudo su - deploy << EOF
+  su - deploy << EOF
   cat <<[-]EOF > /home/deploy/${instancia_add}/frontend/server.js
 const express = require("express");
 const path = require("path");
@@ -113,9 +116,7 @@ app.get("/*", function (req, res) {
 		dotfiles: 'deny', // Mesma regra para arquivos dotfiles aqui
 	});
 });
-
-const PORT = process.env.PORT || ${frontend_port};
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${frontend_port}`));
+app.listen(${frontend_port});
 
 [-]EOF
 EOF
@@ -135,7 +136,7 @@ frontend_start_pm2() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  su - deploy <<EOF
   cd /home/deploy/${instancia_add}/frontend
   pm2 start server.js --name ${instancia_add}-frontend --max-memory-restart 512M
   pm2 save
@@ -143,7 +144,7 @@ EOF
 
  sleep 2
   
-  sudo su - root <<EOF
+   su - root <<EOF
    pm2 startup
   sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
 EOF
@@ -164,7 +165,7 @@ frontend_nginx_setup() {
 
   frontend_hostname=$(echo "${frontend_url/https:\/\/}")
 
-sudo su - root << EOF
+ su - root << EOF
 
 cat > /etc/nginx/sites-available/${instancia_add}-frontend << 'END'
 server {
