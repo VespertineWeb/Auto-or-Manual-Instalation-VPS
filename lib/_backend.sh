@@ -156,7 +156,7 @@ backend_node_dependencies() {
 
   su - deploy <<EOF
   cd /home/deploy/${instancia_add}/backend
-  npm install
+  npm install -f
 EOF
 
   sleep 2
